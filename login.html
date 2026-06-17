@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Login - STORA</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+
+    background-image: url('img/background.jpg');
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+
+    background-color: rgba(0,0,0,0.4);
+
+    background-blend-mode: darken;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    height: 100vh;
+}
+
+/* Box Login */
+.login-box {
+    background: rgb(18, 38, 46);
+    padding: 30px;
+    border-radius: 10px;
+    width: 320px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+/* Judul */
+.login-box h1 {
+    margin: 0;
+    color: #314a65;
+}
+
+.login-box p {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    color: #777;
+    font-size: 14px;
+}
+
+/* Input */
+.login-box input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Tombol */
+.login-box button {
+    width: 100%;
+    padding: 10px;
+    background: #314a65;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.login-box button:hover {
+    background: #22384e;
+}
+
+/* Tombol */
+.login-box button {
+    width: 100%;
+    padding: 10px;
+    background: #314a65;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.login-box button:hover {
+    background: #22384e;
+}
+
+/* LOGIN & DAFTAR */
+.menu-text{
+    color:#ccc;
+    margin-bottom:20px;
+    font-size:14px;
+}
+
+.menu-text span{
+    color:white;
+    font-weight:bold;
+}
+
+/* LUPA PASSWORD */
+.forgot-password{
+    text-align:right;
+    margin-bottom:15px;
+}
+
+.forgot-password a{
+    color:#8db7e0;
+    text-decoration:none;
+    font-size:13px;
+}
+
+.forgot-password a:hover{
+    text-decoration:underline;
+}
+
+/* Footer kecil */
+.footer {
+    margin-top: 15px;
+    font-size: 12px;
+    color: #999;
+}
+/* Footer kecil */
+.footer {
+    margin-top: 15px;
+    font-size: 12px;
+    color: #999;
+}
+
+/* Logo */
+.logo {
+    width: 90px;
+    margin-bottom: 10px;
+
+}
+</style>
+
+</head>
+<body>
+
+<div class="login-box">
+    <img src="img/Logo.png" alt="Logo STORA" class="logo">
+    <h1>STORA</h1>
+    <p>Simpan, Kelola dan Pantau</p>
+    <p class="menu-text">
+    <span>Login</span> |
+    <span>Daftar</span>
+</p>
+
+    <input type="text" id="username" placeholder="Username" required>
+
+<input type="password" id="password" placeholder="Password" required>
+<div class="forgot-password">
+    <a href="#" onclick="lupaPassword()">
+        Lupa Kata Sandi?
+    </a>
+</div>
+
+<button type="button" onclick="login()">Login</button>
+    </form>
+
+    <div class="footer">
+        Sistem Manajemen Pergudangan
+    </div>
+</div>
+<script>
+function login() {
+
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    if(user === "Manajemen Pergudangan" && pass === "STORA123") {
+
+
+        window.location.href = "dashboard.html";
+
+    } else {
+
+        alert("Username atau Password Salah");
+
+    }
+}
+function lupaPassword(){
+
+    alert(
+        "Silakan hubungi admin STORA untuk reset password"
+    );
+
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Monitoring STORA</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f4f6f9;
+}
+
+/* HEADER */
+header{
+    background:#314a65;
+    color:white;
+    padding:15px;
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:220px;
+    height:100vh;
+    background:#22384e;
+    position:fixed;
+    padding-top:20px;
+}
+
+.sidebar a{
+    display:block;
+    color:white;
+    padding:15px;
+    text-decoration:none;
+}
+
+.sidebar a:hover{
+    background:#314a65;
+}
+
+/* CONTENT */
+.content{
+    margin-left:220px;
+    padding:20px;
+}
+
+/* BOX */
+.monitoring-box{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* FILTER */
+.filter-box{
+    display:flex;
+    gap:15px;
+    align-items:center;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.filter-box select{
+    padding:10px;
+    border-radius:5px;
+    border:1px solid #ccc;
+}
+
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    margin-top:20px;
+}
+
+table th{
+    background:#314a65;
+    color:white;
+    padding:12px;
+}
+
+table td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
+}
+
+/* BUTTON */
+.download-btn{
+    background:green;
+    color:white;
+    border:none;
+    padding:10px 15px;
+    border-radius:5px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.download-btn:hover{
+    background:darkgreen;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    STORA - Monitoring Barang
+</header>
+
+<div class="sidebar">
+
+    <a href="dashboard.html">Dashboard</a>
+    <a href="monitoring.html">Monitoring</a>
+    <a href="about.html">About Us</a>
+    <a href="login.html">Logout</a>
+
+</div>
+
+<div class="content">
+
+<div class="monitoring-box">
+
+    <h1>Monitoring Barang Masuk & Keluar</h1>
+
+    <p>
+        Monitoring digunakan untuk memantau dan mengawasi barang yang masuk dan barang keluar
+    </p>
+
+    <!-- FILTER -->
+    <div class="filter-box">
+
+        <label><b>Pilih Jenis Laporan :</b></label>
+
+        <select id="filterLaporan" onchange="filterData()">
+
+    <option value="Semua">Semua Laporan</option>
+
+    <option value="Mingguan">Laporan Mingguan</option>
+
+    <option value="Bulanan">Laporan Bulanan</option>
+
+    <option value="Tahunan">Laporan Tahunan</option>
+
+</select>
+
+<!-- PILIH BULAN -->
+<select id="pilihBulan" style="display:none;">
+
+<option value="">Pilih Bulan</option>
+
+<option value="01">Januari</option>
+<option value="02">Februari</option>
+<option value="03">Maret</option>
+<option value="04">April</option>
+<option value="05">Mei</option>
+<option value="06">Juni</option>
+<option value="07">Juli</option>
+<option value="08">Agustus</option>
+<option value="09">September</option>
+<option value="10">Oktober</option>
+<option value="11">November</option>
+<option value="12">Desember</option>
+
+</select>
+<!-- PILIH JENIS BARANG -->
+<select id="filterJenis">
+
+<option value="Semua">
+Semua Barang
+</option>
+
+<option value="Barang Masuk">
+Barang Masuk
+</option>
+
+<option value="Barang Keluar">
+Barang Keluar
+</option>
+
+</select>
+
+<button
+class="download-btn"
+onclick="filterData()">
+
+Tampilkan
+
+</button>
+
+        <button class="download-btn" onclick="downloadExcel()">
+            Download Excel
+        </button>
+
+        <button class="download-btn" onclick="hapusSemuaData()">
+    Hapus Semua Data
+</button>
+
+    </div>
+
+    <!-- TABEL -->
+    <table id="monitoringTable">
+
+        <tr>
+            <th>Tanggal</th>
+            <th>Pukul</th>
+            <th>Jenis</th>
+            <th>Nama Barang</th>
+            <th>Nama Konsumen</th>
+            <th>Jumlah (Kg)</th>
+            <th>Nama Rak</th>
+        </tr>
+
+    </table>
+
+</div>
+
+</div>
+
+<script>
+
+/*
+=========================================
+AMBIL DATA DARI DASHBOARD
+=========================================
+*/
+
+window.onload = function(){
+
+    tampilkanData();
+
+}
+
+/*
+=========================================
+TAMPILKAN DATA
+=========================================
+*/
+
+function tampilkanData(){
+
+    let tabel = document.getElementById("monitoringTable");
+
+    /*
+    Monitoring digunakan untuk memantau dan mengawasi barang yang masuk dan barang keluar
+    */
+
+    let data = JSON.parse(localStorage.getItem("laporanBarang")) || [];
+
+    data.forEach(function(item){
+
+        let row = tabel.insertRow();
+
+        row.innerHTML = `
+            <td>${item.tanggal}</td>
+            <td>${item.pukul}</td>
+            <td>${item.jenis}</td>
+            <td>${item.nama}</td>
+            <td>${item.konsumen}</td>
+            <td>${item.jumlah} Kg</td>
+            <td>${item.rak}</td>
+        `;
+
+    });
+
+}
+
+/*
+=========================================
+FILTER DATA
+=========================================
+*/
+
+function filterData(){
+
+let laporan =
+document.getElementById(
+"filterLaporan"
+).value;
+
+let jenis =
+document.getElementById(
+"filterJenis"
+).value;
+
+let bulan =
+document.getElementById(
+"pilihBulan"
+);
+
+if(laporan==="Bulanan"){
+
+bulan.style.display="block";
+
+}else{
+
+bulan.style.display="none";
+
+}
+
+let rows =
+document.querySelectorAll(
+"#monitoringTable tr"
+);
+
+for(let i=1;i<rows.length;i++){
+
+let jenisData =
+rows[i].cells[2].innerText;
+
+rows[i].style.display="";
+
+if(
+jenis!=="Semua" &&
+jenisData!==jenis
+){
+
+rows[i].style.display="none";
+
+}
+
+}
+
+}
+
+/*
+=========================================
+DOWNLOAD EXCEL
+=========================================
+*/
+
+function downloadExcel(){
+
+    let table = document.getElementById("monitoringTable");
+
+    let html = table.outerHTML;
+
+    let url = 'data:application/vnd.ms-excel,' + encodeURIComponent(html);
+
+    let link = document.createElement("a");
+
+    link.href = url;
+
+    link.download = "monitoring_stora.xls";
+
+    link.click();
+}
+/* HAPUS SEMUA DATA */
+
+/* HAPUS DATA TAHUN SEKARANG SAJA */
+
+function hapusSemuaData(){
+
+let konfirmasi=
+confirm(
+"Hapus hanya data tahun ini?"
+);
+
+if(konfirmasi){
+
+let tahun=
+new Date().getFullYear();
+
+let data=
+JSON.parse(
+localStorage.getItem(
+"laporanBarang"
+)
+)||[];
+
+let dataBaru=
+data.filter(item=>{
+
+return item.tahun != tahun;
+
+});
+
+localStorage.setItem(
+
+"laporanBarang",
+
+JSON.stringify(dataBaru)
+
+);
+
+location.reload();
+
+}
+
+}
+</script>
+
+</body>
+</html>
